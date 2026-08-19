@@ -200,14 +200,14 @@ a {
 .stage {
   flex: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.9fr);
   grid-template-rows: auto auto;
   grid-template-areas:
     "device keypad"
     "device terminal";
-  gap: 18px;
-  padding: 22px 24px;
-  max-width: 1160px;
+  gap: 20px;
+  padding: 26px 28px;
+  max-width: 1360px;
   width: 100%;
   margin: 0 auto;
   align-items: start;
@@ -278,7 +278,7 @@ a {
 .hero-wrap {
   position: relative;
   width: 100%;
-  max-width: 300px;
+  max-width: 420px;
   display: flex;
   align-items: center;
   justify-content: center;
