@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>C4T - $C4T</title>
+<meta name="description" content="C4T. a cat strapped to a C4 device. enter the code or press the button you were told not to.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="C4T - $C4T">
+<meta property="og:description" content="a cat strapped to a C4 device. enter the code or press the button you were told not to.">
+<meta property="og:image" content="https://c4t-site.vercel.app/assets/og.png">
+<meta property="og:url" content="https://c4t-site.vercel.app">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="C4T - $C4T">
+<meta name="twitter:description" content="a cat strapped to a C4 device. enter the code or press the button you were told not to.">
+<meta name="twitter:image" content="https://c4t-site.vercel.app/assets/og.png">
+<link rel="canonical" href="https://c4t-site.vercel.app">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+
+<link rel="preload" as="image" href="/assets/c4t-cutout.png">
+<link rel="stylesheet" href="/styles.css">
+
+<script>
+// Mandatory inline error catcher: paints a fixed banner on any uncaught error.
+window.addEventListener('error', function (e) {
+  var el = document.getElementById('err-banner');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'err-banner';
+    el.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:99999;background:#3a0a0a;color:#ffb3b3;font:12px/1.5 monospace;padding:8px 12px;border-top:2px solid #ff4444;white-space:pre-wrap;';
+    document.documentElement.appendChild(el);
+  }
+  el.textContent = 'C4T DEVICE FAULT: ' + (e.message || 'unknown error') + ' (' + (e.filename || '') + ':' + (e.lineno || '') + ')';
+});
+window.addEventListener('unhandledrejection', function (e) {
+  var el = document.getElementById('err-banner');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'err-banner';
+    el.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:99999;background:#3a0a0a;color:#ffb3b3;font:12px/1.5 monospace;padding:8px 12px;border-top:2px solid #ff4444;white-space:pre-wrap;';
+    document.documentElement.appendChild(el);
+  }
+  el.textContent = 'C4T DEVICE FAULT (promise): ' + (e.reason && e.reason.message ? e.reason.message : String(e.reason));
+});
+</script>
+</head>
+<body>
+
+<div class="crt-overlay" aria-hidden="true"></div>
+<div class="noise-overlay" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">C4T</span>
+    <span class="status-dot" id="statusDot" aria-hidden="true"></span>
+    <span class="device-status" id="deviceStatus">DEVICE OFFLINE</span>
+  </div>
+  <nav class="nav-links">
+    <a href="#" id="xLink" class="nav-link" target="_blank" rel="noopener">
+      <svg class="x-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.35"/>
+        <path d="M7 7 L17 17 M7.6 7 L6.4 8.6 M16.4 16 L17.6 17.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M17 7 L7 17 M17.6 7.6 L16 6.4 M8 17.6 L6.6 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span>X</span>
+    </a>
+    <a href="#" id="buyLink" class="nav-link nav-link--buy" target="_blank" rel="noopener">BUY</a>
+  </nav>
+</header>
+
+<main class="stage">
+
+  <section class="device" id="deviceFrame">
+    <div class="hero-wrap">
+      <img id="c4tImage" src="/assets/c4t-cutout.png" alt="a low resolution cat's head composited onto a fake C4 explosive block with wires and a numeric keypad" class="c4t-img" width="362" height="515" />
+      <div class="hero-glow" aria-hidden="true"></div>
+    </div>
+
+    <div class="readout">
+      <div class="status-row">
+        <span class="readout-label">STATUS</span>
+        <span class="status-text" id="statusText">C4T ARMED</span>
+      </div>
+      <div class="countdown" id="countdown" aria-live="off">00:04:20</div>
+      <div class="tagline" id="tagline">this c4t will blow up</div>
+    </div>
+  </section>
+
+  <section class="keypad-panel">
+    <div class="panel-label">ENTER CODE</div>
+    <div class="slots" id="slots" aria-hidden="true">
+      <span class="slot" data-slot="0"></span>
+      <span class="slot" data-slot="1"></span>
+      <span class="slot" data-slot="2"></span>
+      <span class="slot" data-slot="3"></span>
+    </div>
+    <div class="keypad-msg" id="keypadMsg" role="status" aria-live="polite">&nbsp;</div>
+
+    <div class="keypad-grid" id="keypadGrid">
+      <button class="key" data-key="1">1</button>
+      <button class="key" data-key="2">2</button>
+      <button class="key" data-key="3">3</button>
+      <button class="key" data-key="4">4</button>
+      <button class="key" data-key="5">5</button>
+      <button class="key" data-key="6">6</button>
+      <button class="key" data-key="7">7</button>
+      <button class="key" data-key="8">8</button>
+      <button class="key" data-key="9">9</button>
+      <button class="key key--wide" data-key="clr">CLR</button>
+      <button class="key" data-key="0">0</button>
+      <button class="key key--ok" data-key="ok">OK</button>
+    </div>
+
+    <button class="do-not-press" id="doNotPress">
+      <span class="dnp-stripe" aria-hidden="true"></span>
+      DO NOT PRESS
+      <span class="dnp-stripe" aria-hidden="true"></span>
+    </button>
+  </section>
+
+  <aside class="terminal" id="terminal">
+    <div class="terminal-title">LOG</div>
+    <div class="terminal-lines" id="terminalLines" role="log" aria-live="polite"></div>
+  </aside>
+
+</main>
+
+<footer class="chrome">
+  <div class="nameplate">
+    <span class="np-item">
+      <span class="np-label">CA</span>
+      <span class="np-value" id="caValue">WIRE_NOT_CUT_YET</span>
+      <button class="np-copy" id="copyCa">COPY</button>
+    </span>
+    <span class="np-item np-ticker">$C4T</span>
+  </div>
+  <button class="sound-toggle" id="soundToggle">SOUND: OFF</button>
+</footer>
+
+<div class="blown-overlay" id="blownOverlay" hidden>
+  <img src="/assets/c4t-cutout.png" alt="the C4T device, now motionless after detonation" class="blown-img" />
+  <div class="blown-text">C4T BLEW UP</div>
+  <button class="again-btn" id="againBtn">DO IT AGAIN</button>
+</div>
+
+<div class="flash" id="flash" aria-hidden="true"></div>
+
+<script type="module" src="/app.js"></script>
+</body>
+</html>

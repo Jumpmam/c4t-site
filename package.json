@@ -1,0 +1,19 @@
+{
+  "name": "c4t-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:fonts": "node build-fonts.mjs",
+    "build:og": "node build-og.mjs",
+    "build": "node build-fonts.mjs && node build-og.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/martian-mono": "^5.3.0",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@resvg/resvg-js": "^2.6.2"
+  },
+  "devDependencies": {
+    "jsdom": "^30.0.1"
+  }
+}
