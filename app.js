@@ -49,8 +49,6 @@ const c4tImage = document.getElementById("c4tImage");
 const statusText = document.getElementById("statusText");
 const countdownEl = document.getElementById("countdown");
 const stageEl = document.querySelector(".stage");
-const topbarEl = document.querySelector(".topbar");
-const chromeEl = document.querySelector(".chrome");
 const slotsEl = document.getElementById("slots");
 const keypadMsg = document.getElementById("keypadMsg");
 const keypadGrid = document.getElementById("keypadGrid");
@@ -59,7 +57,8 @@ const terminalLines = document.getElementById("terminalLines");
 const caValueEl = document.getElementById("caValue");
 const copyCaBtn = document.getElementById("copyCa");
 const soundToggle = document.getElementById("soundToggle");
-const blownOverlay = document.getElementById("blownOverlay");
+const blownPayoff = document.getElementById("blownPayoff");
+const taglineEl = document.getElementById("tagline");
 const againBtn = document.getElementById("againBtn");
 const flashEl = document.getElementById("flash");
 
@@ -339,6 +338,10 @@ doNotPress.addEventListener("click", () => {
 });
 
 // ---- detonate / reset ----
+// The whole sequence stays INSIDE the existing interface (device panel,
+// keypad, terminal all remain visible) - only a brief flash/shake, then
+// the same terminal turns red and glitchy, the same cat JPEG gets punchy
+// bigger, and the payoff text appears. No separate end screen.
 function detonate() {
   if (state.blown) return;
   state.blown = true;
@@ -348,21 +351,32 @@ function detonate() {
   clearTimeout(wrongRevertTimer);
   clearTimeout(idleLogTimer);
   setStatus("C4T BLEW UP", "is-blown");
-  playSfx("glitch", 0.7);
-  logLine("> zero", "warn");
-  logLine("> c4t blew up", "warn");
+  updateCountdownDisplay();
 
+  // 1. impact: flash + shake + glitch + sound
   flashEl.classList.remove("is-active");
   void flashEl.offsetWidth;
   flashEl.classList.add("is-active");
   stageEl.classList.add("is-glitching");
+  playSfx("glitch", 0.7);
 
   setTimeout(() => {
-    topbarEl.style.display = "none";
-    stageEl.style.display = "none";
-    chromeEl.style.display = "none";
-    blownOverlay.hidden = false;
-  }, 340);
+    stageEl.classList.remove("is-glitching");
+  }, 400);
+
+  // 2. after flash: interface stays, gets fucked up
+  setTimeout(() => {
+    stageEl.classList.add("is-blown");
+    logLine("> ERR0R // c4t bl3w up", "warn");
+    logLine("> t3rminal c0rrupted", "warn");
+
+    // 3. cat payoff: same JPEG, punchy bigger, brief shake, then settle
+    c4tImage.classList.add("is-blown-scale");
+
+    // 4. text
+    taglineEl.hidden = true;
+    blownPayoff.hidden = false;
+  }, 150);
 }
 
 againBtn.addEventListener("click", () => {
@@ -376,12 +390,10 @@ againBtn.addEventListener("click", () => {
   countdownEl.classList.remove("is-frozen");
   setStatus("C4T ARMED", "");
   updateCountdownDisplay();
-  stageEl.classList.remove("is-glitching");
-
-  blownOverlay.hidden = true;
-  topbarEl.style.display = "";
-  stageEl.style.display = "";
-  chromeEl.style.display = "";
+  stageEl.classList.remove("is-glitching", "is-blown");
+  c4tImage.classList.remove("is-blown-scale");
+  blownPayoff.hidden = true;
+  taglineEl.hidden = false;
 
   logLine("> device reassembled");
   logLine("> cat detected");

@@ -198,6 +198,39 @@ a {
 
 .stage.is-glitching { animation: glitch-shift 0.4s steps(6); }
 
+.stage.is-blown { position: relative; }
+.stage.is-blown .device,
+.stage.is-blown .keypad-panel,
+.stage.is-blown .terminal {
+  border-color: var(--red-bright);
+}
+.stage.is-blown .keypad-grid,
+.stage.is-blown .do-not-press {
+  pointer-events: none;
+  opacity: 0.35;
+  filter: grayscale(0.5);
+}
+.stage.is-blown::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(217, 80, 63, 0) 0,
+    rgba(217, 80, 63, 0) 3px,
+    rgba(217, 80, 63, 0.07) 3px,
+    rgba(217, 80, 63, 0.07) 4px
+  );
+  animation: blown-scanlines 0.9s steps(2) infinite;
+}
+
+@keyframes blown-scanlines {
+  0%, 100% { transform: translateY(0); opacity: 0.7; }
+  50% { transform: translateY(2px); opacity: 1; }
+}
+
 @keyframes glitch-shift {
   0% { transform: translate(0, 0); filter: none; }
   16% { transform: translate(-6px, 2px); filter: hue-rotate(25deg) saturate(1.4); }
@@ -261,6 +294,23 @@ a {
   100% { transform: translate(0, 0); }
 }
 
+.c4t-img.is-blown-scale {
+  position: relative;
+  z-index: 6;
+  animation: cat-blowup 0.5s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+@keyframes cat-blowup {
+  0% { transform: scale(1) translate(0, 0); }
+  12% { transform: scale(1.2) translate(3px, -2px); }
+  28% { transform: scale(1.55) translate(-3px, 2px); }
+  44% { transform: scale(1.78) translate(3px, -1px); }
+  58% { transform: scale(1.6) translate(-2px, 2px); }
+  72% { transform: scale(1.72) translate(2px, -1px); }
+  86% { transform: scale(1.62) translate(-1px, 1px); }
+  100% { transform: scale(1.65) translate(0, 0); }
+}
+
 .readout {
   width: 100%;
   display: flex;
@@ -305,6 +355,30 @@ a {
 .tagline {
   font-size: 11.5px;
   letter-spacing: 0.02em;
+  color: var(--green-dim);
+}
+.tagline[hidden] { display: none; }
+
+.blown-payoff {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+.blown-payoff[hidden] { display: none; }
+
+.blown-headline {
+  font-family: var(--mono-display);
+  font-size: clamp(2.4rem, 8vw, 3.8rem);
+  letter-spacing: 0.05em;
+  color: var(--red-bright);
+  text-shadow: 0 0 16px rgba(217, 80, 63, 0.4);
+}
+
+.blown-sub {
+  font-size: 12px;
+  letter-spacing: 0.08em;
   color: var(--green-dim);
 }
 
