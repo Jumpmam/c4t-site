@@ -279,8 +279,17 @@ function submitCode() {
   }, 1300);
 }
 
+// autoplay is only legal after a real user gesture; the very first keypad
+// press or DO NOT PRESS click quietly turns sound on so visitors do not
+// have to notice the small footer toggle first. the toggle still works to
+// mute it again.
+function ensureSoundOn() {
+  if (!state.soundOn) setSound(true);
+}
+
 function onKeyPress(key) {
   if (state.blown) return;
+  ensureSoundOn();
   if (key === "clr") {
     state.digits = [];
     renderSlots();
@@ -322,6 +331,7 @@ document.addEventListener("keydown", (e) => {
 // ---- do not press ----
 doNotPress.addEventListener("click", () => {
   if (state.blown) return;
+  ensureSoundOn();
   clearTimeout(defuseTimerA);
   clearTimeout(defuseTimerB);
   clearTimeout(wrongRevertTimer);
