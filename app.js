@@ -55,6 +55,7 @@ const keypadGrid = document.getElementById("keypadGrid");
 const doNotPress = document.getElementById("doNotPress");
 const terminalLines = document.getElementById("terminalLines");
 const caValueEl = document.getElementById("caValue");
+const copyCaBtn = document.getElementById("copyCa");
 const soundToggle = document.getElementById("soundToggle");
 const blownPayoff = document.getElementById("blownPayoff");
 const taglineEl = document.getElementById("tagline");
@@ -437,6 +438,20 @@ function wireLinks() {
     });
   }
 }
+
+copyCaBtn.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(caValueEl.textContent);
+  } catch (e) {
+    /* clipboard denied - still flip the label as an honest best-effort */
+  }
+  copyCaBtn.textContent = "COPIED";
+  copyCaBtn.classList.add("is-copied");
+  setTimeout(() => {
+    copyCaBtn.textContent = "COPY";
+    copyCaBtn.classList.remove("is-copied");
+  }, 1400);
+});
 
 // ---- boot ----
 function boot() {
